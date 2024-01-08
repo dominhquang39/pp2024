@@ -5,11 +5,9 @@ def input_number_students():
     return number
 
 
-def input_student_info():
+def input_student_info(num_students):
     students = []
-    number = input_number_students()
-
-    for _ in range(number):
+    for _ in range(num_students):
         student = {}
         student['Name'] = input("Input name of student: ")
         student['ID'] = input("Input ID of student: ")
@@ -24,18 +22,99 @@ def input_number_courses():
         number = int(input("Input again: "))
     return number
 
-def input_course_info():
+def input_course_info(num_courses):
     courses = []
-    number = input_number_courses()
 
-    for _ in range(number):
-        course = {}
-        course['Name'] = input("Input name of course: ")
-        course['ID'] = input("Input ID of course: ")
-        course.append(course)
+    for _ in range(num_courses):
+            course = {}
+            course['Name'] = input("Input name of course: ")
+            course['ID'] = input("Input ID of course: ")
+            courses.append(course)
     return courses
 
-def input_student_score(students, courses):
-    score = []
-    
+def input_student_score(students, course):
+    print(f"Input score for the student in course {course['Name']}: ")
+    scores = []
+    for student in students:
+        try: 
+            score = float(input(f"Input score for student {student['Name']}: "))
+            studentScore = {
+                'StudentName' : student['Name'],
+                'Score' : score
+            }
+            scores.append(studentScore)
+        except ValueError:
+            print(f"Input the score again: ")
+    return scores
+
+def list_student (students):  
+    if len(students) == 0:
+        print("No student yet")
+    else:
+        print ("\nList of students: \n")
+        for student in students:
+            print(f"Name: {student['Name']}, ID: {student['ID']}, DOB: {student['DOB']}")
+
+def list_course (courses):
+    if len(courses) == 0:
+        print("No course yet")
+    else:
+        print("\nList of course: \n")
+        for course in courses:
+            print(f"Name: {course['Name']}, ID: {course['ID']}")
         
+def list_score_of_course (course, scores):
+    print(f"List score of students in course {course['Name']}: ")
+    if not scores:
+        print("No score yet")
+    else:
+        for student, score in scores.item():
+            print(f"{student}: {score}")
+
+def main():
+    students = []
+    courses = []
+    scores = []
+    while (True):
+        print ("""
+        Student managment: 
+        0. Exit
+        1. Input students information 
+        2. Input course information
+        3. Input score for specific course
+        4. List students information
+        5. List courses information
+        6. List scores of specific course""")
+    
+        option = int(input("Input your choice: "))
+        while option < 0 or option > 6:
+            option = int(input("Input your choice again: "))
+        
+        if option == 0:
+            break
+        elif option == 1:
+            num_students = input_number_students()
+            students = input_student_info(num_students)
+        elif option == 2:
+            num_courses = input_number_courses()
+            courses = input_course_info(num_courses)
+        elif option == 3:
+            if not students or not courses:
+                print("Input student and course information first.")
+            else: 
+                course = input("Input the course to input score: ")
+                scores[course['Name']] = input_student_score(students, course)
+        elif option == 4:
+            list_student(students)
+        elif option == 5:
+            list_course(courses)
+        else:
+            if not students or not courses:
+                print("Please input student and course information first.")
+            else:
+                course = input("Input the course to show score: ")
+                all_student_scores = {score['StudentName']: score['Score'] for score in scores.get(course['Name'], [])}
+                list_score_of_course(course['Name'], all_student_scores)
+
+if __name__ == "__main__":
+    main()  
