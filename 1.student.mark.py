@@ -33,18 +33,17 @@ def input_course_info(num_courses):
     return courses
 
 def input_student_score(students, course):
-    print(f"Input score for the student in course {course['Name']}: ")
+    print(f"Input score for the student in course {course}: ")
     scores = []
     for student in students:
-        try: 
-            score = float(input(f"Input score for student {student['Name']}: "))
-            studentScore = {
-                'StudentName' : student['Name'],
-                'Score' : score
-            }
-            scores.append(studentScore)
-        except ValueError:
-            print(f"Input the score again: ")
+        score = float(input(f"Input score for student {student['Name']}: "))
+        studentScore = {
+            'StudentName' : student['Name'],
+            'Course' : course,
+            'Score' : score
+        }
+        scores.append(studentScore)
+
     return scores
 
 def list_student (students):  
@@ -64,12 +63,12 @@ def list_course (courses):
             print(f"Name: {course['Name']}, ID: {course['ID']}")
         
 def list_score_of_course (course, scores):
-    print(f"List score of students in course {course['Name']}: ")
+    print(f"List score of students in course {course}: ")
     if not scores:
         print("No score yet")
     else:
-        for student, score in scores.item():
-            print(f"{student}: {score}")
+        for score in scores:
+            print(f"{score['StudentName']}: {score['Score']}")
 
 def main():
     students = []
@@ -86,7 +85,7 @@ def main():
         5. List courses information
         6. List scores of specific course""")
     
-        option = int(input("Input your choice: "))
+        option = int(input("\nInput your choice: "))
         while option < 0 or option > 6:
             option = int(input("Input your choice again: "))
         
@@ -103,7 +102,7 @@ def main():
                 print("Input student and course information first.")
             else: 
                 course = input("Input the course to input score: ")
-                scores[course['Name']] = input_student_score(students, course)
+                scores.extend(input_student_score(students, course))
         elif option == 4:
             list_student(students)
         elif option == 5:
@@ -113,8 +112,7 @@ def main():
                 print("Please input student and course information first.")
             else:
                 course = input("Input the course to show score: ")
-                all_student_scores = {score['StudentName']: score['Score'] for score in scores.get(course['Name'], [])}
-                list_score_of_course(course['Name'], all_student_scores)
+                list_score_of_course(course, scores)
 
 if __name__ == "__main__":
     main()  
