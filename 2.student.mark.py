@@ -1,11 +1,9 @@
 class Student:
-    def __init__(self):
-        self.__id = input("Input the student's id: ")
-        self.__name = input("Input the student's name: ")
-        self.__dob = input("Input the student's DOB: ")
+    def __init__(self, id, name, dob):
+        self.__id = id
+        self.__name = name
+        self.__dob = dob
 
-    # Encapsulation part
-        
     def set_id (self, id):
         self.__id = id
      
@@ -25,9 +23,15 @@ class Student:
         return self.__dob
 
 class Course:
-    def __init__(self):
-        self.__id = input("Enter the course's id: ")
-        self.__name = input("Enter the course's name: ")
+    def __init__(self, id, name):
+        self.__id = id
+        self.__name = name
+
+    def set_id (self, id):
+        self.__id = id
+     
+    def set_name (self, name):
+        self.__name = name
     
     def get_id(self):
         return self.__id
@@ -35,43 +39,63 @@ class Course:
     def get_name(self):
         return self.__name
 
-class Utils:
-    # Ask the user to input something
-    def input_something(args):
-        return int(input(f"Enter the number of {args}: "));
-
-    # Show the list
-    def show(list):
-        for i in enumerate(list):
-            # do something here
+class Score:
+    def __init__(self, course, student):
+        self.__course = course
+        self.__student = student
+        self.__score = int(input(f"Enter the score of {self.__course} of {self.__student}: "))
+    
+    def get_score(self):
+        return self.__score
 
 class University:
     def __init__(self):
-        # Initialize the list for DATA option
         self.__num_students = 0
         self.__num_courses = 0
         self.__students = []
         self.__courses = []
+        self.__scores = []
+    
+    def set_students(self):
+        self.__num_students = int(input("Input total number of students: "))
+        for _ in range (self.__num_students):
+            id = input("Input ID of student: ")
+            name = input("Input name of student: ")
+            dob = input("Input day of birth of student: ")
+            student = Student(id, name, dob)
+            self.__students.append(student)
+
+    def set_courses(self):
+        self.__num_courses = int(input("Input total number of courses: "))
+        for _ in range (self.__num_courses):
+            id = input("Input ID of course: ")
+            name = input("Input name of course: ")
+            course = Course(id, name)
+            self.__courses.append(course)
+
+    def set_scores(self):
+        course = int(input("Input name of course to assign score for students: "))
+        for _ in range (self.__num_students):
+            score = Score(course, self.get_students())
+            self.__scores.append(score)
+        
 
     def get_num_students(self):
+        if self.__num_students == 0:
+            return "No student yet!"
         return self.__num_students
     
     def get_num_courses(self):
+        if self.__num_students == 0:
+            return "No course yet!"
         return self.__num_courses
+
     
     def get_students(self):
         return self.__students
 
     def get_courses(self):
         return self.__courses
-
-    def set_num_students(self):
-        std_numb = self.get_num_students()
-        self.__num_students = Utils.input_something("students")            # Example of polyphomism
-
-    def set_num_courses(self):
-        crs_numb = self.get_num_courses()
-        self.__num_courses = Utils.input_something("courses")              # Example of polyphomism
 
     def set_students(self):
 
