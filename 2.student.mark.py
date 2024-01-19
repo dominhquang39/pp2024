@@ -97,13 +97,8 @@ class University:
     def get_courses(self):
         return self.__courses
 
-    def set_students(self):
-
-    def set_courses(self):
-
-    # Display a list of students
     def list_students(self):
-        print("Student list: ")
+        print("Lists of students: ")
         Utils.show(self.get_students())
 
     # Display a list of courses
