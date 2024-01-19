@@ -101,7 +101,7 @@ class University:
         print("Lists of students: ")
         Utils.show(self.get_students())
 
-    # Display a list of courses
+
     def list_courses(self):
         print("Course list: ")
         Utils.show(self.get_courses())
