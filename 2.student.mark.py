@@ -40,10 +40,16 @@ class Course:
         return self.__name
 
 class Score:
-    def __init__(self, course, student):
+    def __init__(self, course, student, score):
         self.__course = course
         self.__student = student
-        self.__score = int(input(f"Enter the score of {self.__course} of {self.__student}: "))
+        self.__score = score
+
+    def get_student(self):
+        return self.__student
+    
+    def get_course(self):
+        return self.__course
     
     def get_score(self):
         return self.__score
@@ -71,70 +77,88 @@ class University:
             id = input("Input ID of course: ")
             name = input("Input name of course: ")
             course = Course(id, name)
-            self.__courses.append(course)
-
+            self.__courses.append(course)  
+            
     def set_scores(self):
-        course = int(input("Input name of course to assign score for students: "))
-        for _ in range (self.__num_students):
-            score = Score(course, self.get_students())
-            self.__scores.append(score)
-        
+        course = input("Input name of course to assign score: ")
+        for student in self.__students:
+            score = int(input(f"Input score for {student.get_name()} in {course}: "))
+            student_score = Score(course, student, score)
+            self.__scores.append(student_score)
 
+
+    def get_students(self):
+        return self.__students
+    
+    def get_courses(self):
+        return self.__courses
+    
     def get_num_students(self):
-        if self.__num_students == 0:
-            return "No student yet!"
         return self.__num_students
     
     def get_num_courses(self):
-        if self.__num_students == 0:
-            return "No course yet!"
         return self.__num_courses
-
     
-    def get_students(self):
-        return self.__students
-
-    def get_courses(self):
-        return self.__courses
-
     def list_students(self):
-        print("Lists of students: ")
-        Utils.show(self.get_students())
-
+        if self.__num_students == 0:
+            print("No students yet. Please input students' information first!")
+        else: 
+            print(f"Total students: {self.get_num_students()} students")
+            print("\nList of students: \n")
+            for student in self.__students:
+                print(f"Name: {student.get_name()}, ID: {student.get_id()}, DOB: {student.get_dob()}")
+            print("=====================================================")
 
     def list_courses(self):
-        print("Course list: ")
-        Utils.show(self.get_courses())
+        if self.__num_courses == 0:
+            print("No course yet. Please input courses' information first!")
+        else:
+            print(f"Total courses: {self.get_num_courses()} courses")
+            print("\nList of courses: \n")
+            for course in self.__courses:
+                print(f"Name: {course.get_name()}, ID: {course.get_id()}")
+            print("=====================================================")
 
-# Main function for the "game"
+
+    def list_scores(self, course_name):
+        for course in self.__courses: 
+            if course.get_name() == course_name:
+                print(f"\nList scores of students in {course.get_name()}: \n")
+                for score in self.__scores:
+                    if score.get_course() == course_name:
+                        print(f"{score.get_student().get_name()}: {score.get_score()}")
+                    else:
+                        print(f"\nCourse {course_name} not found.")
+
 def main():
-    univ = University()
+    uni = University()
 
     while(True):
         print("""
-    0. Exit
-    1. 
-    2. 
-    ...
-    n
-    """) 
-        option = int(input("Your choice: "))                                                         # Choose option from 0 -> n
+            0. Exit
+            1. Input students' information
+            2. Input courses' information
+            3. Input score for specific course
+            4. List students' information
+            5. List courses'  information
+            6. List score of specific course      
+        """) 
+        option = int(input("Input your choice: "))                                                         
         if option == 0:
             break
-
-        elif option == 1:                                                                            # Option 1
-            univ.set_students()
-        elif option == 2:                                                                            # Option 2                                                     
-            univ.set_courses()
-        ... ... 
-
-        elif option == n:                                                                            # Option n
-            # last function (your choice)
-            # univ.list_students() or univ.list_courses()
+        elif option == 1:                                                                            
+            uni.set_students()
+        elif option == 2:                                                                                                                                 
+            uni.set_courses()
+        elif option == 3:
+            uni.set_scores()
+        elif option == 4:
+            uni.list_students()
+        elif option == 5:
+            uni.list_courses()
         else:
-            print("Invalid input. Please try again!")
+            course = input("Input the course to show score: ")
+            uni.list_scores(course)
 
-
-# Call the main function
 if __name__ == "__main__":
     main()
