@@ -61,19 +61,42 @@ class University:
         self.__students = []
         self.__courses = []
         self.__scores = []
+
+    def set_num_students(self):
+        while (True):
+            try:
+                self.__num_students = int(input("Input total number of students: "))
+                if self.__num_students > 0:
+                    return self.__num_students
+                else:
+                    print("Invalid value! Please input positive number of students!")
+            except ValueError:
+                print("Invalid value. Please input positive number of students!")
     
     def set_students(self):
-        self.__num_students = int(input("Input total number of students: "))
-        for _ in range (self.__num_students):
+        num_students = self.set_num_students()
+        for _ in range (num_students):
             id = input("Input ID of student: ")
             name = input("Input name of student: ")
             dob = input("Input day of birth of student: ")
             student = Student(id, name, dob)
             self.__students.append(student)
 
+    def set_num_courses(self):
+        while (True):
+            try:
+                self.__num_courses = int(input("Input total number of courses: "))
+                if self.__num_courses > 0:
+                    return self.__num_courses
+                else:
+                    print("Invalid value! Please input positive number of courses!")
+            except ValueError:
+                print("Invalid value. Please input positive number of courses!")
+
+
     def set_courses(self):
-        self.__num_courses = int(input("Input total number of courses: "))
-        for _ in range (self.__num_courses):
+        num_courses = self.set_num_courses()
+        for _ in range (num_courses):
             id = input("Input ID of course: ")
             name = input("Input name of course: ")
             course = Course(id, name)
@@ -120,15 +143,22 @@ class University:
             print("=====================================================")
 
 
-    def list_scores(self, course_name):
-        for course in self.__courses: 
-            if course.get_name() == course_name:
-                print(f"\nList scores of students in {course.get_name()}: \n")
-                for score in self.__scores:
-                    if score.get_course() == course_name:
-                        print(f"{score.get_student().get_name()}: {score.get_score()}")
-                    else:
-                        print(f"\nCourse {course_name} not found.")
+    def list_scores(self):
+        if self.__num_students == 0 or self.__num_courses == 0:
+            print("Input students' and courses' information first!")
+        elif not self.__scores:
+            print("No score yet! Please input score for students in this course first!")
+        else:
+            course_name = input("Input name of course to show score: ")
+            for course in self.__courses: 
+                if course.get_name() == course_name:
+                    print(f"\nList scores of students in {course.get_name()}: \n")
+                    for score in self.__scores:
+                        if score.get_course() == course_name:
+                            print(f"{score.get_student().get_name()}: {score.get_score()}")
+                            print("=====================================================")
+                        else:
+                            print(f"\nCourse {course_name} not found.")
 
 def main():
     uni = University()
@@ -157,8 +187,7 @@ def main():
         elif option == 5:
             uni.list_courses()
         else:
-            course = input("Input the course to show score: ")
-            uni.list_scores(course)
+            uni.list_scores()
 
 if __name__ == "__main__":
     main()
