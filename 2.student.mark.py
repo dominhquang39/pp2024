@@ -156,9 +156,9 @@ class University:
                     for score in self.__scores:
                         if score.get_course() == course_name:
                             print(f"{score.get_student().get_name()}: {score.get_score()}")
-                            print("=====================================================")
                         else:
                             print(f"\nCourse {course_name} not found.")
+            print("=====================================================")
 
 def main():
     uni = University()
