@@ -1,3 +1,5 @@
+import os
+import gzip
 import numpy as np
 import curses
 from domains import *
@@ -17,6 +19,10 @@ class University:
         self.__students = []
         self.__courses = []
         self.__scores = []
+        self.decompress_file()
+
+    def __del__(self):
+        self.compress_file()
 
     def set_num_students(self, stdscr):
         while (True):
@@ -121,6 +127,34 @@ class University:
     
     def get_num_courses(self):
         return self.__num_courses
+    
+    def compress_file(self):
+        try:
+            with open("student.txt", "r") as student_file:
+                student_data = student_file.read().encode("utf-8")
+            with open("course.txt", "r") as course_file:
+                course_data = course_file.read().encode("utf-8")
+            with open("score.txt", "r") as score_file:
+                score_data = score_file.read().encode("utf-8")
+            
+            compressed_data = gzip.compress(student_data  + course_data + score_data)
+
+            with gzip.open("students.dat", "ab") as compressed_file:
+                compressed_file.write(compressed_data)
+        except IOError:
+            print(f"Error compressing files: {IOError}")
+
+    def decompress_file(self):
+        if os.path.exists("students.dat"):
+            try:
+                with gzip.open("students.dat", "rb") as compressed_file:
+                    compressed_data = compressed_file.read()
+                    decompressed_data = gzip.decompress(compressed_data)
+
+                with open("decompressed.dat", "wb") as decompressed_file:
+                    decompressed_file.write(decompressed_data)
+            except IOError:
+                print(f"Error decompressing files: {IOError}")
     
     def list_students(self, stdscr):
         if self.__num_students == 0:
