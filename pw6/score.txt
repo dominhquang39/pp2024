@@ -1,0 +1,4 @@
+Student ID	Student 	Course  	Score   
+24VN13379	Do Minh Quang	music   	18      
+24VN11380	Ngo Minh Ngoc	music   	19      
+24VN11744	Quyen Chi Long	music   	20      
